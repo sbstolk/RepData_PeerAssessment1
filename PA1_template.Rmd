@@ -49,13 +49,41 @@ The next step is to make a histogram of this information. I chose *ggplot2* for 
 +     geom_histogram(fill = "blue", binwidth = 500) +
 + labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
 
+The histogram shows a distibution of steps. The mean and median are calculated as follows. 
+
+> steps_mean   <- mean(steps_per_day$steps, na.rm=TRUE)
+> steps_median <- median(steps_per_day$steps, na.rm=TRUE)
+> steps_mean
+[1] 10766.19
+> steps_median
+[1] 10765
 
 ## What is the average daily activity pattern?
 
+To calculate the number of steps over time, we need to slice the data into five-minute intervals. Also, it's easier to convert the numbers into integers. 
 
+> steps_per_interval <- aggregate(rdata$steps,by = list(interval = rdata$interval),FUN=mean, na.rm=TRUE)
+> steps_per_interval$interval <- as.integer(levels(steps_per_interval$interval)[steps_per_interval$interval])
+> colnames(steps_per_interval) <- c("interval", "steps")
+
+This data can now be used to create a plot of steps over time by five-minute-interval. Once again I have chosen to use ggplot2.
+
+> ggplot(steps_per_interval, aes(x=interval, y=steps)) +   
++ geom_line(color="blue", size=1) + 
++ labs(title="Average Daily Activity Pattern", x="Interval", y="Number of steps")
+
+To identify the inteval containing the greatest activity, we use the following.
+
+> max_interval <- steps_per_interval[which.max(steps_per_interval$steps),]
+> max_interval
+    interval    steps
+104      835 206.1698
 
 ## Imputing missing values
 
-
+To find how many missing values occur in the data set, we use *is.na()* and sum the count of results. 
+> missing_vals <- sum(is.na(rdata$steps))
+> missing_vals
+[1] 2304
 
 ## Are there differences in activity patterns between weekdays and weekends?
