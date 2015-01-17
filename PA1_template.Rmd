@@ -24,7 +24,7 @@ Used *str(rdata)* to check that the data is in the correct format.
 
 ```{r}
 str(rdata)
-##'data.frame':	17568 obs. of  3 variables:
+##'data.frame':  17568 obs. of  3 variables:
 ## $ steps   : num  NA NA NA NA NA NA NA NA NA NA ...
 ## $ date    : Date, format: "2012-10-01" "2012-10-01" "2012-10-01" ...
 ## $ interval: Factor w/ 288 levels "0","5","10","15",..: 1 2 3 4 5 6 7 8 9 10 ...
@@ -45,10 +45,10 @@ steps_mean_fill   <- mean(fill_steps_per_day$steps, na.rm=TRUE)
 steps_median_fill <- median(fill_steps_per_day$steps, na.rm=TRUE)
 
 steps_mean_fill
-[1] 10766.19
+10766.19
 
 steps_median_fill
-[1] 10766.19
+10766.19
 ```
 
 ## What is mean total number of steps taken per day?
@@ -57,8 +57,8 @@ The
 
 ```{r}
 steps_per_day <- aggregate(steps ~ date, rdata, sum)
-> colnames(steps_per_day) <- c("date","steps")
-> head(steps_per_day)
+colnames(steps_per_day) <- c("date","steps")
+head(steps_per_day)
 ```
 
 The result is the sum of steps grouped by day. 
@@ -88,10 +88,10 @@ steps_mean   <- mean(steps_per_day$steps, na.rm=TRUE)
 steps_median <- median(steps_per_day$steps, na.rm=TRUE)
 
 steps_mean
-[1] 10766.19
+10766.19
 
 steps_median
-[1] 10765
+10765
 ```
 
 ## What is the average daily activity pattern?
@@ -106,7 +106,7 @@ colnames(steps_per_interval) <- c("interval", "steps")
 
 This data can now be used to create a plot of steps over time by five-minute-interval. Once again I have chosen to use ggplot2.
 
-```{r,echo=false}
+```{r,echo=FALSE}
 ggplot(steps_per_interval, aes(x=interval, y=steps)) 
     geom_line(color="blue", size=1) 
     labs(title="Average Daily Activity Pattern", x="Interval", y="Number of steps")
@@ -117,8 +117,8 @@ To identify the inteval containing the greatest activity, we use the following.
 ```{r}
 max_interval <- steps_per_interval[which.max(steps_per_interval$steps),]
 max_interval
-    interval    steps
-104      835 206.1698
+interval_steps
+835
 ```
 
 ## Imputing missing values
@@ -127,7 +127,7 @@ To find how many missing values occur in the data set, we use *is.na()* and sum 
 ```{r}
 missing_vals <- sum(is.na(rdata$steps))
 missing_vals
-[1] 2304
+2304
 ```
 
 One way to deal with the missing values is to replace them with the averages calculated earlier. 
@@ -146,18 +146,13 @@ rdata_fill <- data.frame(
      steps = na_fill(rdata, steps_per_interval),
      date = rdata$date,
      interval = rdata$interval)
- str(rdata_fill)
-'data.frame':	17568 obs. of  3 variables:
- $ steps   : num  1.717 0.3396 0.1321 0.1509 0.0755 ...
- $ date    : Date, format: "2012-10-01" "2012-10-01" "2012-10-01" ...
- $ interval: Factor w/ 288 levels "0","5","10","15",..: 1 2 3 4 5 6 7 8 9 10 ...
  ```
  
  To check that the averages have propegated through and there are no missing values, I repeated the *is.na()* sum of missing values. 
  
 ```{r}
 sum(is.na(rdata_fill$steps))
-[1] 0
+0
 ```
 
 Then I used thise numbers to create a histogram with ggplot2 as done in the previous section. 
@@ -176,9 +171,9 @@ I then calculated the mean and median of the data with the missing values filled
 steps_mean_fill   <- mean(fill_steps_per_day$steps, na.rm=TRUE)
 steps_median_fill <- median(fill_steps_per_day$steps, na.rm=TRUE)
 steps_mean_fill
-[1] 10766.19
+10766.19
  steps_median_fill
-[1] 10766.19
+10766.19
 ```
 The mean is the same in both instances, but the median is 1.19 steps higher in the second calculation (10766.19 instead of 10765). 
 
