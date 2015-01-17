@@ -9,21 +9,20 @@ output:
 ## Loading and preprocessing the data
 The data was loaded from *activity.csv* using read.csv()
 ```{r}
-> opts_chunk$set(echo = TRUE, results = 'hold')
-> setwd("/Users/blair_stolk/courseraR/repdata_data_activity/")
-> rdata <- read.csv('activity.csv', header = TRUE, sep = ",",colClasses=c("numeric", "character", "numeric"))
+setwd("/Users/blair_stolk/courseraR/repdata_data_activity/")
+rdata <- read.csv('activity.csv', header = TRUE, sep = ",",colClasses=c("numeric", "character", "numeric"))
 ```
 The data was then cleaned and appropriately formatted 
 
 ```{r}
-> rdata$date <- as.Date(rdata$date, format = "%Y-%m-%d")
-> rdata$interval <- as.factor(rdata$interval)
+rdata$date <- as.Date(rdata$date, format = "%Y-%m-%d")
+rdata$interval <- as.factor(rdata$interval)
 ```
 
 Used *str(rdata)* to check that the data is in the correct format. 
 
 ```{r}
->str(rdata)
+str(rdata)
 ##'data.frame':	17568 obs. of  3 variables:
 ## $ steps   : num  NA NA NA NA NA NA NA NA NA NA ...
 ## $ date    : Date, format: "2012-10-01" "2012-10-01" "2012-10-01" ...
@@ -33,19 +32,21 @@ Used *str(rdata)* to check that the data is in the correct format.
 The data with the missing values replaced was then plotted as a histogram as before. 
 
 ```{r}
-> fill_steps_per_day <- aggregate(steps ~ date, rdata_fill, sum)
-> colnames(fill_steps_per_day) <- c("date","steps")
-> ggplot(fill_steps_per_day, aes(x = steps)) + 
-+ geom_histogram(fill = "blue", binwidth = 500) + 
-+ labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
+fill_steps_per_day <- aggregate(steps ~ date, rdata_fill, sum)
+colnames(fill_steps_per_day) <- c("date","steps")
+ggplot(fill_steps_per_day, aes(x = steps)) + 
+  geom_histogram(fill = "blue", binwidth = 500) + 
+  labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
 ```
 
 ```{r}
-> steps_mean_fill   <- mean(fill_steps_per_day$steps, na.rm=TRUE)
-> steps_median_fill <- median(fill_steps_per_day$steps, na.rm=TRUE)
-> steps_mean_fill
+steps_mean_fill   <- mean(fill_steps_per_day$steps, na.rm=TRUE)
+steps_median_fill <- median(fill_steps_per_day$steps, na.rm=TRUE)
+
+steps_mean_fill
 [1] 10766.19
-> steps_median_fill
+
+steps_median_fill
 [1] 10766.19
 ```
 
@@ -205,7 +206,7 @@ For these calculations, I used the tables with the missing values filled.
 
 From this I plotted a histogram. 
 
-```{r ggplot2,fig.width=4,fig.height = 3,message=false}
+```{r,ggplot2,fig.width=4,fig.height = 3,echo=false}
 library(ggplot2)
 ggplot(data_weekdays, aes(x=interval, y=steps))
      geom_line(color="blue") 
