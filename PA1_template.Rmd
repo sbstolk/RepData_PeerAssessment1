@@ -32,12 +32,10 @@ str(rdata)
 
 The data with the missing values replaced was then plotted as a histogram as before. 
 
-```{r echo=FALSE, message=FALSE, warning=FALSE}
-opts_chunk$set(fig.width=18, fig.height=10)
-library(ggplot2)
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 fill_steps_per_day <- aggregate(steps ~ date, rdata_fill, sum)
 colnames(fill_steps_per_day) <- c("date","steps")
-ggplot(fill_steps_per_day, aes(x = steps)) + 
+qplot(fill_steps_per_day, aes(x = steps)) + 
     geom_histogram(fill = "blue", binwidth = 500) + 
     labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
 ```
