@@ -10,9 +10,10 @@ output:
 The data was loaded from *activity.csv* using read.csv()
 ```{r}
 setwd("/Users/blair_stolk/courseraR/repdata_data_activity/")
+opts_chunk$set(echo = TRUE, results = 'hold')
 rdata <- read.csv('activity.csv', header = TRUE, sep = ",",colClasses=c("numeric", "character", "numeric"))
 ```
-The data was then cleaned and appropriately formatted 
+The data was then cleaned and appropriately formatted. 
 
 ```{r}
 rdata$date <- as.Date(rdata$date, format = "%Y-%m-%d")
@@ -31,12 +32,14 @@ str(rdata)
 
 The data with the missing values replaced was then plotted as a histogram as before. 
 
-```{r}
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+opts_chunk$set(fig.width=18, fig.height=10)
+library(ggplot2)
 fill_steps_per_day <- aggregate(steps ~ date, rdata_fill, sum)
 colnames(fill_steps_per_day) <- c("date","steps")
 ggplot(fill_steps_per_day, aes(x = steps)) + 
-  geom_histogram(fill = "blue", binwidth = 500) + 
-  labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
+    geom_histogram(fill = "blue", binwidth = 500) + 
+    labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
 ```
 
 ```{r}
@@ -55,7 +58,7 @@ steps_median_fill
 The 
 
 ```{r}
-> steps_per_day <- aggregate(steps ~ date, rdata, sum)
+steps_per_day <- aggregate(steps ~ date, rdata, sum)
 > colnames(steps_per_day) <- c("date","steps")
 > head(steps_per_day)
 ```
@@ -75,19 +78,21 @@ The result is the sum of steps grouped by day.
 The next step is to make a histogram of this information. I chose *ggplot2* for plot creation. 
 
 ```{r}
-> ggplot(steps_per_day, aes(x = steps)) + 
-+     geom_histogram(fill = "blue", binwidth = 500) +
-+ labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
+ggplot(steps_per_day, aes(x = steps)) + 
+    geom_histogram(fill = "blue", binwidth = 500) +
+    labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
 ```
 
 The histogram shows a distibution of steps. The mean and median are calculated as follows. 
 
 ```{r}
-> steps_mean   <- mean(steps_per_day$steps, na.rm=TRUE)
-> steps_median <- median(steps_per_day$steps, na.rm=TRUE)
-> steps_mean
+steps_mean   <- mean(steps_per_day$steps, na.rm=TRUE)
+steps_median <- median(steps_per_day$steps, na.rm=TRUE)
+
+steps_mean
 [1] 10766.19
-> steps_median
+
+steps_median
 [1] 10765
 ```
 
@@ -96,17 +101,17 @@ The histogram shows a distibution of steps. The mean and median are calculated a
 To calculate the number of steps over time, we need to slice the data into five-minute intervals. Also, it's easier to convert the numbers into integers. 
 
 ```{r}
-> steps_per_interval <- aggregate(rdata$steps,by = list(interval = rdata$interval),FUN=mean, na.rm=TRUE)
-> steps_per_interval$interval <- as.integer(levels(steps_per_interval$interval)[steps_per_interval$interval])
-> colnames(steps_per_interval) <- c("interval", "steps")
+steps_per_interval <- aggregate(rdata$steps,by = list(interval = rdata$interval),FUN=mean, na.rm=TRUE)
+steps_per_interval$interval <- as.integer(levels(steps_per_interval$interval)[steps_per_interval$interval])
+colnames(steps_per_interval) <- c("interval", "steps")
 ```
 
 This data can now be used to create a plot of steps over time by five-minute-interval. Once again I have chosen to use ggplot2.
 
 ```{r}
-> ggplot(steps_per_interval, aes(x=interval, y=steps)) +   
-+ geom_line(color="blue", size=1) + 
-+ labs(title="Average Daily Activity Pattern", x="Interval", y="Number of steps")
+ggplot(steps_per_interval, aes(x=interval, y=steps)) 
+    geom_line(color="blue", size=1) 
+    labs(title="Average Daily Activity Pattern", x="Interval", y="Number of steps")
 ```
 
 To identify the inteval containing the greatest activity, we use the following.
