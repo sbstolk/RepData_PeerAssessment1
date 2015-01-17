@@ -75,7 +75,7 @@ The result is the sum of steps grouped by day.
 
 The next step is to make a histogram of this information. I chose *ggplot2* for plot creation. 
 
-```{r,ggplot2,fig.width=4,fig.height = 3,echo=FALSE, message=FALSE, warning=FALSE}
+```{r,echo=FALSE}
 ggplot(steps_per_day, aes(x = steps)) + 
     geom_histogram(fill = "blue", binwidth = 500) +
     labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
@@ -106,7 +106,7 @@ colnames(steps_per_interval) <- c("interval", "steps")
 
 This data can now be used to create a plot of steps over time by five-minute-interval. Once again I have chosen to use ggplot2.
 
-```{r,ggplot2,fig.width=4,fig.height = 3,echo=FALSE, message=FALSE, warning=FALSE}
+```{r,echo=false}
 ggplot(steps_per_interval, aes(x=interval, y=steps)) 
     geom_line(color="blue", size=1) 
     labs(title="Average Daily Activity Pattern", x="Interval", y="Number of steps")
@@ -209,7 +209,7 @@ data_weekdays <- data_by_weekdays(rdata_fill)
 
 From this I plotted a histogram. 
 
-```{r,ggplot2,fig.width=4,fig.height = 3, echo=FALSE, message=FALSE, warning=FALSE}
+```{r,echo=FALSE}
 library(ggplot2)
 ggplot(data_weekdays, aes(x=interval, y=steps))
      geom_line(color="blue") 
