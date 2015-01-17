@@ -86,4 +86,30 @@ To find how many missing values occur in the data set, we use *is.na()* and sum 
 > missing_vals
 [1] 2304
 
+One way to deal with the missing values is to replace them with the averages calculated earlier. 
+> na_fill <- function(data, pervalue) {
++     na_index <- which(is.na(data$steps))
++     na_replace <- unlist(lapply(na_index, FUN=function(idx){
++         interval = data[idx,]$interval
++         pervalue[pervalue$interval == interval,]$steps
++     }))
++     fill_steps <- data$steps
++     fill_steps[na_index] <- na_replace
++     fill_steps
++ }
+> rdata_fill <- data.frame(
++     steps = na_fill(rdata, steps_per_interval),
++     date = rdata$date,
++     interval = rdata$interval)
+> str(rdata_fill)
+'data.frame':	17568 obs. of  3 variables:
+ $ steps   : num  1.717 0.3396 0.1321 0.1509 0.0755 ...
+ $ date    : Date, format: "2012-10-01" "2012-10-01" "2012-10-01" ...
+ $ interval: Factor w/ 288 levels "0","5","10","15",..: 1 2 3 4 5 6 7 8 9 10 ...
+ 
+ To check that the averages have propegated through and there are no missing values, I repeated the *is.na()* sum of missing values. 
+ 
+> sum(is.na(rdata_fill$steps))
+[1] 0
+
 ## Are there differences in activity patterns between weekdays and weekends?
