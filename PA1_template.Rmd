@@ -7,11 +7,47 @@ output:
 
 
 ## Loading and preprocessing the data
+The data was loaded from *activity.csv* using read.csv()
+> opts_chunk$set(echo = TRUE, results = 'hold')
+> setwd("/Users/blair_stolk/courseraR/repdata_data_activity/")
+> rdata <- read.csv('activity.csv', header = TRUE, sep = ",",colClasses=c("numeric", "character", "numeric"))
 
+The data was then cleaned and appropriately formatted 
 
+> rdata$date <- as.Date(rdata$date, format = "%Y-%m-%d")
+> rdata$interval <- as.factor(rdata$interval)
+
+Used *str(rdata)* to check that the data is in the correct format. 
+
+>str(rdata)
+##'data.frame':	17568 obs. of  3 variables:
+## $ steps   : num  NA NA NA NA NA NA NA NA NA NA ...
+## $ date    : Date, format: "2012-10-01" "2012-10-01" "2012-10-01" ...
+## $ interval: Factor w/ 288 levels "0","5","10","15",..: 1 2 3 4 5 6 7 8 9 10 ...
 
 ## What is mean total number of steps taken per day?
 
+The 
+
+> steps_per_day <- aggregate(steps ~ date, rdata, sum)
+> colnames(steps_per_day) <- c("date","steps")
+> head(steps_per_day)
+
+The result is the sum of steps grouped by day. 
+
+## date steps
+## 1 2012-10-02   126
+## 2 2012-10-03 11352
+## 3 2012-10-04 12116
+## 4 2012-10-05 13294
+## 5 2012-10-06 15420
+## 6 2012-10-07 11015
+
+The next step is to make a histogram of this information. I chose *ggplot2* for plot creation. 
+
+> ggplot(steps_per_day, aes(x = steps)) + 
++     geom_histogram(fill = "blue", binwidth = 500) +
++ labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
 
 
 ## What is the average daily activity pattern?
