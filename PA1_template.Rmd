@@ -25,6 +25,20 @@ Used *str(rdata)* to check that the data is in the correct format.
 ## $ date    : Date, format: "2012-10-01" "2012-10-01" "2012-10-01" ...
 ## $ interval: Factor w/ 288 levels "0","5","10","15",..: 1 2 3 4 5 6 7 8 9 10 ...
 
+The data with the missing values replaced was then plotted as a histogram as before. 
+
+> fill_steps_per_day <- aggregate(steps ~ date, rdata_fill, sum)
+> colnames(fill_steps_per_day) <- c("date","steps")
+> ggplot(fill_steps_per_day, aes(x = steps)) + 
++ geom_histogram(fill = "blue", binwidth = 500) + 
++ labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
+
+> steps_mean_fill   <- mean(fill_steps_per_day$steps, na.rm=TRUE)
+> steps_median_fill <- median(fill_steps_per_day$steps, na.rm=TRUE)
+> steps_mean_fill
+[1] 10766.19
+> steps_median_fill
+[1] 10766.19
 ## What is mean total number of steps taken per day?
 
 The 
@@ -111,5 +125,24 @@ One way to deal with the missing values is to replace them with the averages cal
  
 > sum(is.na(rdata_fill$steps))
 [1] 0
+
+Then I used thise numbers to create a histogram with ggplot2 as done in the previous section. 
+
+> fill_steps_per_day <- aggregate(steps ~ date, rdata_fill, sum)
+> colnames(fill_steps_per_day) <- c("date","steps")
+> ggplot(fill_steps_per_day, aes(x = steps)) + 
++ geom_histogram(fill = "blue", binwidth = 500) + 
++ labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
+
+I then calculated the mean and median of the data with the missing values filled in. 
+
+> steps_mean_fill   <- mean(fill_steps_per_day$steps, na.rm=TRUE)
+> steps_median_fill <- median(fill_steps_per_day$steps, na.rm=TRUE)
+> steps_mean_fill
+[1] 10766.19
+> steps_median_fill
+[1] 10766.19
+
+The mean is the same in both instances, but the median is 1.19 steps higher in the second calculation (10766.19 instead of 10765). 
 
 ## Are there differences in activity patterns between weekdays and weekends?
