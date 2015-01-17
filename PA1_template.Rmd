@@ -37,8 +37,8 @@ fill_steps_per_day <- aggregate(steps ~ date, rdata_fill, sum)
 colnames(fill_steps_per_day) <- c("date","steps")
 ```
 ```{r, ggplot2,fig.width=4,fig.height = 3,echo=FALSE, message=FALSE, warning=FALSE}
-ggplot(fill_steps_per_day, aes(x = steps)) + 
-    geom_histogram(fill = "blue", binwidth = 500) + 
+ggplot(fill_steps_per_day, aes(x = steps)) 
+    geom_histogram(fill = "blue", binwidth = 500) 
     labs(title="Steps per Day", x = "Number of Steps per Day", y = "Number of times in a day(Count)")
 ```
 
