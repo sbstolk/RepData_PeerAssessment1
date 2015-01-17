@@ -4,12 +4,10 @@ output:
   html_document:
     keep_md: true
 ---
-
-
 ## Loading and preprocessing the data
 The data was loaded from *activity.csv* using read.csv()
 ```{r}
-setwd("/Users/blair_stolk/courseraR/repdata_data_activity/")
+setwd("/Users/blair_stolk/courseraR")
 opts_chunk$set(echo = TRUE, results = 'hold')
 rdata <- read.csv('activity.csv', header = TRUE, sep = ",",colClasses=c("numeric", "character", "numeric"))
 ```
@@ -213,4 +211,3 @@ ggplot(data_weekdays, aes(x=interval, y=steps))
      facet_wrap(~ dayofweek, nrow=2, ncol=1)
      labs(x="Interval", y="Number of steps")
 ```
-
